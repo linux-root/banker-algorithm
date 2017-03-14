@@ -1,0 +1,2 @@
+http.port: 9999
+http.cors.allow-origin: '*'

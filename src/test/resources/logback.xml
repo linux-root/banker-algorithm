@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--Disable Logback DEBUG-->
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
+
+
+    <logger name="io.netty" level="ERROR"/>
+    <logger name="io.vertx" level="ERROR"/>
+    <logger name="org.apache.shiro" level="ERROR"/>
+
+    <root level="debug">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
