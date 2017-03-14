@@ -36,7 +36,7 @@ public class Runner {
         AppConfig appConfig = ConfigFactory.getConfig(appConfigFile, AppConfig.class);
         appConfig.validate();
 
-        ExampleServer server = new ExampleServer(Vertx.vertx(), appConfig);
+        RestServer server = new RestServer(Vertx.vertx(), appConfig);
         server.start(event -> {
             if (event.succeeded()) {
                 logger.debug("WebServer started at http://127.0.0.1:" + appConfig.getHttpPort());

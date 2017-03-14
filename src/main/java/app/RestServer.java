@@ -1,5 +1,6 @@
 package app;
 
+import app.model.Data;
 import app.model.Model;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -32,7 +33,7 @@ import java.util.List;
 /**
  * Created by chipn@eway.vn on 1/15/17.
  */
-public class ExampleServer extends WebServer<AppConfig> {
+public class RestServer extends WebServer<AppConfig> {
 
     private String CLIENT_ID = "306684131134-vlgl9ibaoo8fboo2o1dsrgv24h2ov648.apps.googleusercontent.com";
     private HttpTransport transport;
@@ -41,7 +42,7 @@ public class ExampleServer extends WebServer<AppConfig> {
             .put("keyStore", new JsonObject().put("path", "keystore.jceks").put("type", "jceks").put("password", "secret"));
     private JWTAuth authProvider;
     private Repository repository = new Repository();
-    public ExampleServer(Vertx vertx, AppConfig config) {
+    public RestServer(Vertx vertx, AppConfig config) {
         super(vertx, config);
         authProvider = JWTAuth.create(vertx, JWTConfig);
     }
@@ -58,10 +59,16 @@ public class ExampleServer extends WebServer<AppConfig> {
         router.post("/v1/authorization.json").handler(this::generateJWT);
         router.put("/v1/authorization.json").handler(this::refreshJWT);
         router.get("/v1/models.json").handler(this::getModels);
-        router.get("/v1/models/:id.json").handler(this::getModel);
-        router.post("/v1/models.json").handler(this::createModel);
-        router.put("/v1/models/:id.json").handler(this::updateModel);
-        router.delete("/v1/models/:id.json").handler(this::deleteModel);
+        router.post("/banker").handler(this::checkSafeStatus);
+    }
+
+    private void checkSafeStatus(RoutingContext context) {
+        JsonRequest<Data> jsonRequest = JsonUtils.decode(context, Data.class);
+        Data data = jsonRequest.getData();
+        ArrayList<int[]> result = Banker.checkSafeStatus(data.getM(), data.getN(), data.getAllocation(), data.getMax(), data.getAvailable());
+        JsonResponse<ArrayList> jsonResponse = new JsonResponse<>(context, 200);
+        jsonResponse.setData(result);
+        jsonResponse.write();
     }
 
     private void generateJWT(RoutingContext context) {

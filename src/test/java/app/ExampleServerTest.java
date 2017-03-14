@@ -40,7 +40,7 @@ public class ExampleServerTest extends TestCase {
         appConfig.setHttpPort(RestAssured.port);
         appConfig.validate();
 
-        ExampleServer exampleServer = new ExampleServer(vertx, appConfig);
+        RestServer exampleServer = new RestServer(vertx, appConfig);
 
         Async async = context.async();
         exampleServer.start(event -> {
