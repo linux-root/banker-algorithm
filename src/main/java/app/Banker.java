@@ -9,9 +9,8 @@ import java.util.ArrayList;
  */
 public class Banker {
 
-    private static ArrayList result = new ArrayList<int[]>(); // lưu các kết quả
-    public static ArrayList<int[]> checkSafeStatus (int m, int n, int[] allocation, int[] max, int[] available) {
-
+    static ArrayList<int[]> checkSafeStatus (int m, int n, int[] allocation, int[] max, int[] available) {
+        ArrayList result = new ArrayList<int[]>(); // lưu các kết quả
         int[] series = new int[n]; // lưu 1 chuỗi tiến trình
         Raw[] matrixes = new Raw[n];
 
@@ -26,11 +25,11 @@ public class Banker {
         }
 
         int[] work = available;
-        step2(matrixes, work, 0, series, n);
+        step2(matrixes, work, 0, series, n, result);
         return result;
     }
 
-    static private void step2 (Raw[] matrixes, int[] work, int h, int[] series, int n) {
+    static private void step2 (Raw[] matrixes, int[] work, int h, int[] series, int n, ArrayList<int[]> result) {
         if (h == n) {
             int[] seriesClone = new int[n];
             for (int i = 0;i < n; i++) {
@@ -45,7 +44,7 @@ public class Banker {
             if (VectorCalculate.notGreater(need, work) && !matrixes[i].finish) {
                 matrixes[i].finish = true;
                 series[h] = i;
-                step2(matrixes, VectorCalculate.plus(work, matrixes[i].allocation), h + 1, series, n);
+                step2(matrixes, VectorCalculate.plus(work, matrixes[i].allocation), h + 1, series, n, result);
             }
         }
         if (h >= 1) {

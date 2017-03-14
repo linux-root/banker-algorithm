@@ -68,10 +68,4 @@ public class RestServer extends WebServer<AppConfig> {
                 .allowCredentials(true);
         router.route("/*").handler(corsHandler);
     }
-
-    private void displayHomePage(RoutingContext context) {
-        JsonResponse<String> jsonResponse = new JsonResponse<>(context, 200);
-        jsonResponse.setData("everything is ok");
-        jsonResponse.write();
-    }
 }
