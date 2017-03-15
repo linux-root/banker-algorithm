@@ -11,13 +11,8 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class WebConfig {
 
-    @JsonIgnore
-    protected static final Logger logger = LoggerFactory.getLogger(WebConfig.class);
-
-    @JsonProperty("http.port")
     protected Integer httpPort;
 
-    @JsonProperty("http.cors.allow-origin")
     protected String allowOrigin;
 
     public String getAllowOrigin() {
@@ -36,8 +31,8 @@ public abstract class WebConfig {
         this.httpPort = httpPort;
     }
 
-    public void validate() {
-        Validate.notNull(httpPort, " http.port must be not null");
+    public WebConfig(Integer httpPort, String allowOrigin) {
+        this.httpPort = httpPort;
+        this.allowOrigin = allowOrigin;
     }
-
 }

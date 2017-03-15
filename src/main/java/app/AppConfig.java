@@ -7,8 +7,7 @@ import io.x10.vertx.WebConfig;
  */
 public class AppConfig extends WebConfig {
 
-    @Override
-    public void validate() {
-        super.validate();
+    public AppConfig(Integer httpPort, String allowOrigin) {
+        super(httpPort, allowOrigin);
     }
 }

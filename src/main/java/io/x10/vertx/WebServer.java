@@ -134,7 +134,7 @@ public abstract class WebServer<T extends WebConfig> {
         StaticHandler staticHandler = StaticHandler.create();
         //=> Disable file caching
         staticHandler.setCachingEnabled(false);
-        router.route("/static/*").handler(staticHandler);
+        router.route("/").handler(staticHandler);
     }
 
     protected void setupFaviconHandler(Router router) {

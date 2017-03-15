@@ -32,9 +32,9 @@ public class Runner {
 
 
     public static void main(String[] args) throws Exception {
-        File appConfigFile = new File(System.getProperty("app.home"), "conf/config.yml");
-        AppConfig appConfig = ConfigFactory.getConfig(appConfigFile, AppConfig.class);
-        appConfig.validate();
+        int port = Integer.parseInt(args[0]);
+        String allowOrigin = "*";
+        AppConfig appConfig = new AppConfig(port, allowOrigin);
 
         RestServer server = new RestServer(Vertx.vertx(), appConfig);
         server.start(event -> {

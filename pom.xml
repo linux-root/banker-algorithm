@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.x10.examples</groupId>
-    <artifactId>vertx-examples</artifactId>
+    <artifactId>vertx-banker-server</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -20,6 +20,20 @@
     <build>
         <pluginManagement>
             <plugins>
+                <!--heroku requires-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>2.4</version>
+                    <executions>
+                        <execution>
+                            <id>copy-dependencies</id>
+                            <phase>package</phase>
+                            <goals><goal>copy-dependencies</goal></goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -107,6 +121,17 @@
                 <finalName>${app.config.name}</finalName>
                 <plugins>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>2.5.1</version>
+                        <configuration>
+                            <source>1.8</source>
+                            <target>1.8</target>
+                            <optimize>true</optimize>
+                            <debug>true</debug>
+                        </configuration>
+                    </plugin>
+                    <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>appassembler-maven-plugin</artifactId>
                         <executions>
@@ -136,8 +161,10 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-assembly-plugin</artifactId>
+                        <version>2.3</version>
                         <executions>
                             <execution>
+                                <id>build-jar-with-dependencies</id>
                                 <phase>package</phase>
                                 <goals>
                                     <goal>single</goal>
@@ -145,9 +172,16 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <descriptors>
-                                <descriptor>src/assembly/zip.xml</descriptor>
-                            </descriptors>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <finalName>banker</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <archive>
+                                <manifest>
+                                    <mainClass>app.Runner</mainClass>
+                                </manifest>
+                            </archive>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -291,22 +325,6 @@
             <version>21.0</version>
             <scope>test</scope>
         </dependency>
-
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.google.api.client/google-api-client-googleapis-auth-oauth -->
-        <dependency>
-            <groupId>com.google.apis</groupId>
-            <artifactId>google-api-services-oauth2</artifactId>
-            <version>v1-rev129-1.22.0</version>
-        </dependency>
-
 
     </dependencies>
 </project>
