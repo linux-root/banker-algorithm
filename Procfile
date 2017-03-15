@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar target/banker.jar $PORT
+web: cd /target && java -jar banker.jar $PORT
