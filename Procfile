@@ -1,1 +1,1 @@
-web: cd target && java -jar banker.jar $PORT
+web: cd target && ls -s
