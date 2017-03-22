@@ -30,4 +30,11 @@ public class VectorCalculate {
         }
         return result;
     }
+    public static boolean isZero(int[] a) {
+        int length = a.length;
+        for (int i = 0; i < length; i++) {
+            if (a[i] != 0) return false;
+        }
+        return true;
+    }
 }

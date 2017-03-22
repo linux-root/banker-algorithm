@@ -43,7 +43,6 @@ public class Data {
     public void setMax(int[] max) {
         this.max = max;
     }
-
     public int[] getAvailable() {
         return available;
     }

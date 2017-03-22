@@ -26,17 +26,26 @@ public class RestServer extends WebServer<AppConfig> {
     protected void setupRouter(Router router) throws Exception {
         this.setupCorsHandler(router);
         router.post("/banker").handler(this::checkSafeStatus);
+        router.post("/detect").handler(this::detectDeadLock);
     }
 
     private void checkSafeStatus(RoutingContext context) {
-        JsonRequest<Data> jsonRequest = JsonUtils.decode(context, Data.class);
-        Data data = jsonRequest.getData();
-        ArrayList<int[]> result = Banker.checkSafeStatus(data.getM(), data.getN(), data.getAllocation(), data.getMax(), data.getAvailable());
-        JsonResponse<ArrayList> jsonResponse = new JsonResponse<>(context, 200);
-        jsonResponse.setData(result);
-        jsonResponse.write();
+        try {
+            JsonRequest<Data> jsonRequest = JsonUtils.decode(context, Data.class);
+            Data data = jsonRequest.getData();
+            ArrayList<int[]> result = Banker.checkSafeStatus(data.getM(), data.getN(), data.getAllocation(), data.getMax(), data.getAvailable());
+            JsonResponse<ArrayList> jsonResponse = new JsonResponse<>(context, 200);
+            jsonResponse.setData(result);
+            jsonResponse.write();
+        }catch (Exception e){
+            JsonResponse<String> jsonResponse = new JsonResponse<>(context, 400);
+            jsonResponse.setData(e.getMessage());
+            jsonResponse.write();
+        }
     }
+    private void detectDeadLock(RoutingContext context) {
 
+    }
 
     public void setupCorsHandler(Router router) {
         CorsHandler corsHandler = CorsHandler.create(appConfig.getAllowOrigin())
